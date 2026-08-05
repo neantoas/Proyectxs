@@ -31,11 +31,11 @@ let pp = ''
 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
 
 //CREADOR Y OTROS
-global.creadorN = '543884642194';
+global.creadorN = '51992621601';
 global.creadorM = global.creadorN + '@s.whatsapp.net';
 global.botreal = `${(conn.user.jid == global.conn.user.jid ? 'Oficial' : 'Sub-Bot')}`
 global.ofcbot = `${conn.user.jid.split('@')[0]}`
-global.asistencia = 'Wa.me/543884642194'
+global.asistencia = 'Wa.me/51992621601'
 
 //REACCIONES 
 global.rwait = '🕒'
@@ -60,9 +60,9 @@ global.wait = '*⏳ Aguarde un momento...*';
 global.hotw = '*🔥 Los comandos nsfw están desactivados para este chat.*';
 
 //ENLACES
-var grupo = 'https://chat.whatsapp.com/FCS6htvAmlT7nq006lxU4I'
+var grupo = 'https://chat.whatsapp.com/GY3eZyNH80ZFGds07ZYTgh'
 var web = 'https://yancito-bot.vercel.app/' 
-let instagram = 'https://www.instagram.com/Jotaa.hrz'
+let instagram = 'https://www.instagram.com/aleizn'
 
 global.redes = [grupo, web, instagram].getRandom()
 
@@ -133,7 +133,7 @@ global.taguser = '@' + m.sender.split("@s.whatsapp.net")
 var more = String.fromCharCode(8206)
 global.readMore = more.repeat(850)
 
-global.authN = `ꘓꘓ Jota Bot`;
+global.authN = `ꘓꘓ aleizn Bot`;
 
 global.packN= `ꘓꘓ  𝖲ᥙᥒ𝖿͟ᥣ͟ᥲ𝗋ᥱࣲ 𝖳ᥱᥲ𝗆  彡`*/
 
@@ -146,7 +146,7 @@ global.fake = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo
 //ID CANALES
 global.idchannel = '120363357231409846@newsletter'
 global.canalIdM = ["120363357231409846@newsletter", "120363377595441592@newsletter", "120363318267632676@newsletter"]
-global.canalNombreM = ["𝑺𝒊𝒈𝒖𝒆 𝒆𝒍 𝑪𝒂𝒏𝒂𝒍 𝒃𝒚 𝑱𝒐𝒕𝒂 🐼", "𝑱𝒐𝒕𝒂 𝑩𝒐𝒕 𝒃𝒚 𝑺𝒉𝒂𝒅𝒐𝒘′𝒔 𝑪𝒍𝒖𝒃 🌹", "⏤͟͟͞͞🌤️ 𝑺𝒖𝒏𝒇𝒍𝒂𝒓𝒆 𝑻𝒆𝒂𝒎 𝑶𝒇𝒊𝒄𝒊𝒂𝒍"]
+global.canalNombreM = ["𝑺𝒊𝒈𝒖𝒆 𝒆𝒍 𝑪𝒂𝒏𝒂𝒍 𝒃𝒚 𝑱𝒐𝒕𝒂 🐼", "𝐀𝐥𝐞𝐢𝐳𝐧 𝐁𝐨𝐭 🌹", "⏤͟͟͞͞🌤️ 𝐀𝐥𝐞𝐢𝐳𝐧 𝐁𝐨𝐭"]
 global.channelRD = await getRandomChannel()
 // global.estilo = { key: {  fromMe: false, participant: `0@s.whatsapp.net`, ...(false ? { remoteJid: "3876577197-120363302285079181@g.us" } : {}) }, message: { orderMessage: { itemCount : -999999, status: 1, surface : 1, message: `${packname}`, orderTitle: 'Bang', thumbnail: icons, sellerJid: '0@s.whatsapp.net'}}}
 

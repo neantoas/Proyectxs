@@ -24,7 +24,7 @@ let handler = async (m, { conn, text }) => {
     if (!text) {
         await m.react('⌛')
         return conn.sendMessage(m.chat, {
-            text: `😒 *¿Y el texto, genio? No puedo hacer magia sin palabras.*\n\n> ✨ *ejemplo:* .brat Adhara Bot es el mejor`,
+            text: `😒 *¿Y el texto, genio? No puedo hacer magia sin palabras.*\n\n> ✨ *ejemplo:* .brat Aleizn Bot es el mejor`,
         }, { quoted: m });
     }
 
