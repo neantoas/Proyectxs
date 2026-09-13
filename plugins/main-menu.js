@@ -17,9 +17,9 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered).length
     const readMore = '\u200b'.repeat(850)
 
-    await m.react('💜')
+    await m.react('🌷')
 
-    const img = 'https://files.catbox.moe/6vv1s6.jpeg'
+    const img = 'https://files.catbox.moe/mxeqyx.jpg'
 
 let tags = {};
 let emojis = {
@@ -82,7 +82,7 @@ for (let key in emojis) {
     let defaultMenu = {
 
 
-    before: `｡ﾟ○☆💜☆ᥫᩣαժαɾαᥫᩣ☆💜☆○ﾟ｡
+    before: `｡ﾟ○☆🌷𝐋𝐞𝐞𝐭𝐭𝐬𝐢𝐭𝐚 𝐁𝐨𝐭🌷☆○ﾟ｡
      𓊆ྀི𝑴𝒆𝒏𝒖 𝑨𝒅𝒉𝒂𝒓𝒂 𝑩𝒐𝒕ྀི𓊇
 𓂃 ࣪˖ ⋆.˚ ʚїɞ ⋆  ${taguser} ⋆. 𐙚 ˚
 𝚃𝚎𝚗 𝚞𝚗/𝚞𝚗𝚊 ${saludo} ౨ৎ✨

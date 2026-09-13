@@ -17,12 +17,12 @@ const { name, description, author, version } = require(join(__dirname, './packag
 const { say } = cfonts;
 const rl = createInterface(process.stdin, process.stdout);
 
-say('Aleizn\nBot\nMD', {
+say('LeettsitaBot\nBot\nMD', {
   font: 'chrome',
   align: 'center',
   gradient: ['red', 'magenta']
 });
-say(`by aleizn}`, {
+say(`by LeettsitaBot}`, {
   font: 'console',
   align: 'center',
   gradient: ['red', 'magenta']

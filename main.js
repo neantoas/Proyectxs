@@ -79,7 +79,7 @@ global.conns = [];
 }
 
 global.creds = 'creds.json'
-global.authFile = 'AleiznSession'
+global.authFile = 'LeettsitaBotSession'
 global.authFileJB  = 'JadiBots'
 const {state, saveState, saveCreds} = await useMultiFileAuthState(global.authFile)
 const msgRetryCounterMap = (MessageRetryMap) => { }

@@ -1,7 +1,7 @@
 let handler = async (m, { conn, usedPrefix: _p }) => {
 
   let usertag = '@' + m.sender.split('@')[0]
-  const img = 'https://files.catbox.moe/6uc1ya.jpg'
+  const img = 'https://files.catbox.moe/mxeqyx.jpg'
 
   let tags = {
     "logos": "「 *Logos* 」🏝️"

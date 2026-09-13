@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, usedPrefix, text, args, command }) => {
-   await m.react('💜');
+   await m.react('🌷');
 
     let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender;
     let name = await conn.getName(who);
@@ -9,9 +9,9 @@ let handler = async (m, { conn, usedPrefix, text, args, command }) => {
 
     // VCARD
     let list = [{
-        displayName: "aleizn💜",
-        vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:aleizn💜
-\nitem1.TEL;waid=51992621601:51992621601\nitem1.X-ABLabel:Número\nitem2.EMAIL;type=INTERNET: lucxxs.qzy.vx@gmail.com\nitem2.X-ABLabel:Email\nitem3.URL:https://www.instagram.com/lucxxs.qzy\nitem3.X-ABLabel:Internet\nitem4.ADR:;; Argentina 🇦🇷;;;;\nitem4.X-ABLabel:Region\nEND:VCARD`,
+        displayName: "LeettsitaBot🌷",
+        vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:LeettsitaBot🌷
+\nitem1.TEL;waid=+522722581214:+522722581214\nitem1.X-ABLabel:Número\nitem2.EMAIL;type=INTERNET: leettsita.vx@gmail.com\nitem2.X-ABLabel:Email\nitem3.URL:https://www.instagram.com/leettsita\nitem3.X-ABLabel:Internet\nitem4.ADR:;; Argentina 🇦🇷;;;;\nitem4.X-ABLabel:Region\nEND:VCARD`,
     }];
 
     await conn.sendMessage(m.chat, {

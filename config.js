@@ -8,39 +8,39 @@ import axios from 'axios'
 import moment from 'moment-timezone' 
 
 global.owner = [
-   ['51992621601', 'aleizn 🐼', true],
-   ['51992621601', 'Aleizn', true],
-   ['51992621601','Aleizn', true],
-   ['51992621601', 'Aleizn', true],
+   ['+522722581214', 'LeettsitaBot 🐼', true],
+   ['+522722581214', 'LeettsitaBot', true],
+   ['+522722581214','LeettsitaBot', true],
+   ['+522722581214', 'LeettsitaBot', true],
 ]
 
 global.creator = [
-   ['51992621601', 'aleizn 🐼', true]
+   ['+522722581214', 'LeettsitaBot 🐼', true]
 ]
 
 global.mods = 
 global.prems = 
 
 
-global.packname = 'Aleizn Bot MD'
-global.botname = 'Aleizn Bot'
-global.wm = 'Aleizn Bot - MD'
-global.author = 'Aleizn MD'
-global.dev = 'Aleizn Bot'
+global.packname = 'LeettsitaBot Bot MD'
+global.botname = 'LeettsitaBot Bot'
+global.wm = 'LeettsitaBot Bot - MD'
+global.author = 'LeettsitaBot MD'
+global.dev = 'LeettsitaBot Bot'
 global.errorm = 'Error: ${error.message}'
-global.namebot = 'Aleizn'
-global.nameai = 'Aleizn Ai'
-global.textbot = 'Aleizn BOT MD'
-global.textmain = 'AleiznBOT'
-global.textmain2 = 'Aleizn Bot MD'
+global.namebot = 'LeettsitaBot'
+global.nameai = 'LeettsitaBot Ai'
+global.textbot = 'LeettsitaBot BOT MD'
+global.textmain = 'LeettsitaBotBOT'
+global.textmain2 = 'LeettsitaBot Bot MD'
 global.vs = '2.1.0'
-global.emotg = '💜'
-global.msgtagall = '💜⋆ 𝗘𝗧𝗜𝗤𝗨𝗘𝗧𝗔 𝗚𝗘𝗡𝗘𝗥𝗔𝗟 ⋆💜\n🛍️𝗔𝗱𝗾𝘂𝗶𝗲𝗿𝗲 𝗲𝗹 𝗯𝗼𝘁 𝗰𝗼𝗻 ⨾\n↳ wa.me/51992621601‬'
-global.moneda = 'AleiznCoins'
+global.emotg = '🌷'
+global.msgtagall = '𖥻 ׁ ׅ  𝘉𝘰𝘵 𝘣𝘺 @𝘭𝘦𝘦𝘵𝘵𝘴𝘪𝘵𝘢 ! ﹒🌷*\n. 🌷 ּ֯ ┆꒰ 𝘉𝘰𝘵 𝘚𝘦𝘳𝘷𝘪𝘤𝘦: .ᐟ ⨾\n↳ wa.me/+522722581214‬'
+global.moneda = 'LeettsitaBotCoins'
 
-global.sessions = 'AleiznSession'
+global.sessions = 'LeettsitaBotSession'
 global.jadi = 'JadiBots'
-global.nameqr = 'Aleizn'
+global.nameqr = 'LeettsitaBot'
 
 
 global.catalogo = fs.readFileSync('./media/catalogo.jpg')
