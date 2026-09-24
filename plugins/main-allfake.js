@@ -31,11 +31,11 @@ let pp = ''
 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
 
 //CREADOR Y OTROS
-global.creadorN = '+522722581214';
+global.creadorN = '+51992621601';
 global.creadorM = global.creadorN + '@s.whatsapp.net';
 global.botreal = `${(conn.user.jid == global.conn.user.jid ? 'Oficial' : 'Sub-Bot')}`
 global.ofcbot = `${conn.user.jid.split('@')[0]}`
-global.asistencia = 'Wa.me/+522722581214'
+global.asistencia = 'Wa.me/+51992621601'
 
 //REACCIONES 
 global.rwait = '🕒'
@@ -62,7 +62,7 @@ global.hotw = '*🔥 Los comandos nsfw están desactivados para este chat.*';
 //ENLACES
 var grupo = 'https://chat.whatsapp.com/KKB2G0vEk98DR9P9pVrorQ?s=cl&p=a&mlu=4&ilr=4'
 var web = 'https://yancito-bot.vercel.app/' 
-let instagram = 'https://www.instagram.com/LeettsitaBot'
+let instagram = 'https://www.instagram.com/AleiznBot'
 
 global.redes = [grupo, web, instagram].getRandom()
 
@@ -133,7 +133,7 @@ global.taguser = '@' + m.sender.split("@s.whatsapp.net")
 var more = String.fromCharCode(8206)
 global.readMore = more.repeat(850)
 
-global.authN = `ꘓꘓ LeettsitaBot Bot`;
+global.authN = `ꘓꘓ AleiznBot Bot`;
 
 global.packN= `ꘓꘓ  𝖲ᥙᥒ𝖿͟ᥣ͟ᥲ𝗋ᥱࣲ 𝖳ᥱᥲ𝗆  彡`*/
 

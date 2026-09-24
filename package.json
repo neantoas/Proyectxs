@@ -18,16 +18,16 @@
 "eslint": "eslint .",
 "eslintfix": "eslint --fix ."
 },
-"homepage": "https://github.com/LeettsitaBothrz/Bot-MD",
+"homepage": "https://github.com/AleiznBothrz/Bot-MD",
 "author": {
-"name": "LeettsitaBothrz"
+"name": "AleiznBothrz"
 },
 "repository": {
 "type": "git",
-"url": "git+https://github.com/LeettsitaBothrz/Bot-MD.git"
+"url": "git+https://github.com/AleiznBothrz/Bot-MD.git"
 },
 "bugs": {
-"url": "https://github.com/LeettsitaBothrz/Bot-MD/issues"
+"url": "https://github.com/AleiznBothrz/Bot-MD/issues"
 },
 "license": "GPL-3.0-or-later",
 "dependencies": {
