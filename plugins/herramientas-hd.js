@@ -1,87 +1,74 @@
-import fetch from 'node-fetch'
-import FormData from 'form-data'
+import axios from 'axios';
+import FormData from 'form-data';
 
-let handler = async (m, { conn, usedPrefix, command }) => {
-  const quoted = m.quoted ? m.quoted : m
-  const mime = quoted.mimetype || quoted.msg?.mimetype || ''
-
-  if (!/image\/(jpe?g|png)/i.test(mime)) {
-    await conn.sendMessage(m.chat, { react: { text: '✖️', key: m.key } })
-    return m.reply(`🌸 *Por favor, envie una imagen o responda a la imagen utilizando el comando.*`)
-  }
-
+let handler = async (m, { conn, prefix, command }) => {
   try {
-    await conn.sendMessage(m.chat, { react: { text: '⏰', key: m.key } })
-    conn.reply(m.chat, `🔄 *Mejorando la calidad de la imagen...*
-> Por favor espere en lo que envio su archivo`, m)  
-    const media = await quoted.download()
-    const ext = mime.split('/')[1]
-    const filename = `upscaled_${Date.now()}.${ext}`
+    let q = m.quoted ? m.quoted : m;
+    let mime = (q.msg || q).mimetype || '';
 
-    const form = new FormData()
-    form.append('image', media, { filename, contentType: mime })
-    form.append('scale', '2')
+    if (!mime) return m.reply(`📸 Responde a una imagen con el comando *${prefix}${command}* para mejorar su calidad.`);
+    if (!mime.startsWith('image')) return m.reply(`⚠️ Solo se admiten imágenes.`);
 
-    const headers = {
-      ...form.getHeaders(),
-      'accept': 'application/json',
-      'x-client-version': 'web',
-      'x-locale': 'en'
-    }
+    // Reacción de procesamiento (Rayo)
+    await conn.sendMessage(m.chat, {
+      react: { text: "⚡", key: m.key }
+    });
 
-    const res = await fetch('https://api2.pixelcut.app/image/upscale/v1', {
-      method: 'POST',
-      headers,
-      body: form
-    })
+    const media = await q.download();
 
-    const json = await res.json()
+    // Procesamiento con IA
+    const enhancedBuffer = await ihancer(media, { method: 1, size: 'high' });
 
-    if (!json?.result_url || !json.result_url.startsWith('http')) {
-      throw new Error('Gagal mendapatkan URL hasil dari Pixelcut.')
-    }
-
-    const resultBuffer = await (await fetch(json.result_url)).buffer()
+    const caption = `✨ *LETTSITA*`;
 
     await conn.sendMessage(m.chat, {
-      image: resultBuffer,
-      caption: `✅ 𝙄𝙈𝘼𝙂𝙀𝙉 𝙈𝙀𝙅𝙊𝙍𝘼𝘿𝘼\n\n> AleiznBot bot`.trim()
-    }, { quoted: m })
+      image: enhancedBuffer,
+      caption
+    }, { quoted: m });
 
-    await conn.sendMessage(m.chat, { react: { text: '✔️', key: m.key } })
-  } catch (err) {
-    await conn.sendMessage(m.chat, { react: { text: '✖️', key: m.key } })
-    m.reply(`⚠️ *Ocurrio un error*:\n${err.message || err}`)
+    // Reacción de éxito
+    await conn.sendMessage(m.chat, {
+      react: { text: "✅", key: m.key }
+    });
+
+  } catch (e) {
+    console.error(e);
+    await conn.sendMessage(m.chat, {
+      react: { text: "❌", key: m.key }
+    });
+    await m.reply("⚠️ Ocurrió un error al procesar la imagen con la IA.");
   }
+};
+
+async function ihancer(buffer, { method = 1, size = 'low' } = {}) {
+    const _size = ['low', 'medium', 'high']
+
+    if (!buffer || !Buffer.isBuffer(buffer)) throw new Error('Se requiere una imagen')
+    if (method < 1 || method > 4) throw new Error('Métodos disponibles: 1, 2, 3, 4')
+    if (!_size.includes(size)) throw new Error(`Calidades disponibles: ${_size.join(', ')}`)
+
+    const form = new FormData()
+    form.append('method', method.toString())
+    form.append('is_pro_version', 'false')
+    form.append('is_enhancing_more', 'false')
+    form.append('max_image_size', size)
+    form.append('file', buffer, `didier_${Date.now()}.jpg`) // Nombre de archivo actualizado
+
+    const { data } = await axios.post('https://ihancer.com/api/enhance', form, {
+        headers: {
+            ...form.getHeaders(),
+            'accept-encoding': 'gzip',
+            'host': 'ihancer.com',
+            'user-agent': 'Dart/3.5 (dart:io)'
+        },
+        responseType: 'arraybuffer'
+    })
+
+    return Buffer.from(data)
 }
 
-handler.help = ["hd"]
-handler.tags = ["tools"]
-handler.command = ["remini", "hd", "enhance"]
+handler.help = ['hd'];
+handler.tags = ['ai', 'imagen'];
+handler.command = ['hd', 'upscale', 'enhance', 'remini'];
 
-export default handler
-async function remini(imageData, operation) {
-  return new Promise(async (resolve, reject) => {
-    const availableOperations = ["enhance", "recolor", "dehaze"];
-    if (availableOperations.includes(operation)) {
-      operation = operation;
-    } else {
-      operation = availableOperations[0];
-    }
-    const baseUrl = "https://inferenceengine.vyro.ai/" + operation + ".vyro";
-    const formData = new FormData();
-    formData.append("image", Buffer.from(imageData), {filename: "enhance_image_body.jpg", contentType: "image/jpeg"});
-    formData.append("model_version", 1, {"Content-Transfer-Encoding": "binary", contentType: "multipart/form-data; charset=utf-8"});
-    formData.submit({url: baseUrl, host: "inferenceengine.vyro.ai", path: "/" + operation, protocol: "https:", headers: {"User-Agent": "okhttp/4.9.3", Connection: "Keep-Alive", "Accept-Encoding": "gzip"}},
-      function (err, res) {
-        if (err) reject(err);
-        const chunks = [];
-        res.on("data", function (chunk) {chunks.push(chunk)});
-        res.on("end", function () {resolve(Buffer.concat(chunks))});
-        res.on("error", function (err) {
-        reject(err);
-        });
-      },
-    );
-  });
-}
+export default handler;
