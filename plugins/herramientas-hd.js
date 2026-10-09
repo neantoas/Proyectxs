@@ -1,63 +1,74 @@
-import yts from 'yt-search'
-import axios from 'axios'
+import axios from 'axios';
+import FormData from 'form-data';
 
-let handler = async (m, { conn, usedPrefix, command, text }) => {
-  if (!text) {
-    return conn.reply(m.chat, `*✨ Por favor, ingresa el nombre de la canción o video que deseas buscar.*\n> *\`Ejemplo:\`* ${usedPrefix + command} Bad Bunny - Monaco`, m)
-  }
-
-  m.react('⏳')
-
+let handler = async (m, { conn, prefix, command }) => {
   try {
-    // 1. Buscar la canción en YouTube
-    const search = await yts(text)
-    if (!search || !search.videos.length) {
-      m.react('✖️')
-      return conn.reply(m.chat, 'No se encontraron resultados para tu búsqueda.', m)
-    }
+    let q = m.quoted ? m.quoted : m;
+    let mime = (q.msg || q).mimetype || '';
 
-    const song = search.videos[0]
-    const { title, thumbnail, timestamp, url, author } = song
+    if (!mime) return m.reply(`📸 Responde a una imagen con el comando *${prefix}${command}* para mejorar su calidad.`);
+    if (!mime.startsWith('image')) return m.reply(`⚠️ Solo se admiten imágenes.`);
 
-    let infoText = `🎵 *YOUTUBE - PLAY (MP3)* 🎵\n\n` +
-                   `📌 *Título:* ${title}\n` +
-                   `⏱️ *Duración:* ${timestamp}\n` +
-                   `👤 *Canal:* ${author.name}\n\n` +
-                   `_Descargando audio, por favor espera..._`
+    // Reacción de procesamiento (Rayo)
+    await conn.sendMessage(m.chat, {
+      react: { text: "⚡", key: m.key }
+    });
 
-    // Enviar la miniatura con los datos de la canción
-    await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: infoText }, { quoted: m })
+    const media = await q.download();
 
-    // 2. Endpoint adaptado a ytmp3 con tu apikey
-    let apiUrl = `https://dv-yer-api.online/ytmp3?apikey=dvyer431729171143&url=${encodeURIComponent(url)}`
-    
-    // 3. Petición a la API
-    let res = await axios.get(apiUrl)
-    
-    // Capturar el enlace de descarga del audio
-    let downloadUrl = res.data.result || res.data.url || res.data.download
+    // Procesamiento con IA
+    const enhancedBuffer = await ihancer(media, { method: 1, size: 'high' });
 
-    if (!downloadUrl) {
-      throw new Error('La API no devolvió un enlace de descarga de audio válido.')
-    }
+    const caption = `KaisenBot`;
 
-    // 4. Enviar el archivo como audio MP3 al chat de WhatsApp
-    await conn.sendMessage(m.chat, { 
-        audio: { url: downloadUrl }, 
-        mimetype: 'audio/mpeg',
-        ptt: false // Cambia a true si prefieres que se envíe como nota de voz
-    }, { quoted: m })
+    await conn.sendMessage(m.chat, {
+      image: enhancedBuffer,
+      caption
+    }, { quoted: m });
 
-    m.react('✅')
-  } catch (err) {
-    console.error(err)
-    m.react('✖️')
-    m.reply(`✖️ Ocurrió un error al procesar el audio: ${err.message}`)
+    // Reacción de éxito
+    await conn.sendMessage(m.chat, {
+      react: { text: "✅", key: m.key }
+    });
+
+  } catch (e) {
+    console.error(e);
+    await conn.sendMessage(m.chat, {
+      react: { text: "❌", key: m.key }
+    });
+    await m.reply("⚠️ Ocurrió un error al procesar la imagen con la IA.");
   }
+};
+
+async function ihancer(buffer, { method = 1, size = 'low' } = {}) {
+    const _size = ['low', 'medium', 'high']
+
+    if (!buffer || !Buffer.isBuffer(buffer)) throw new Error('Se requiere una imagen')
+    if (method < 1 || method > 4) throw new Error('Métodos disponibles: 1, 2, 3, 4')
+    if (!_size.includes(size)) throw new Error(`Calidades disponibles: ${_size.join(', ')}`)
+
+    const form = new FormData()
+    form.append('method', method.toString())
+    form.append('is_pro_version', 'false')
+    form.append('is_enhancing_more', 'false')
+    form.append('max_image_size', size)
+    form.append('file', buffer, `didier_${Date.now()}.jpg`) // Nombre de archivo actualizado
+
+    const { data } = await axios.post('https://ihancer.com/api/enhance', form, {
+        headers: {
+            ...form.getHeaders(),
+            'accept-encoding': 'gzip',
+            'host': 'ihancer.com',
+            'user-agent': 'Dart/3.5 (dart:io)'
+        },
+        responseType: 'arraybuffer'
+    })
+
+    return Buffer.from(data)
 }
 
-handler.help = ['play <texto>']
-handler.command = ['play', 'cancion', 'audio']
-handler.tags = ['downloader']
+handler.help = ['hd'];
+handler.tags = ['ai', 'imagen'];
+handler.command = ['hd', 'upscale', 'enhance', 'remini'];
 
-export default handler
+export default handler;
