@@ -19,7 +19,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
     await m.react('🌷')
 
-    const img = 'https://files.catbox.moe/sy1dwt.jpeg'
+    const img = 'https://files.catbox.moe/mxeqyx.jpg'
 
 let tags = {};
 let emojis = {
@@ -80,8 +80,10 @@ for (let key in emojis) {
 }
 
     let defaultMenu = {
-    before: `⊹ ࣪ ˖KaisenBotˊ˗ 
-ˊ˗ˊ
+    before: `⊹ ࣪ ˖⤷🌷゛𝘋𝘶𝘦𝘯̃𝘢 𝘥𝘦𝘭 𝘣𝘰𝘵ˎˊ˗ 
+
+📞: wa.me/522722581214
+𝘐𝘨: instagram.com/leettsitaˊ˗ˊ
 `,
      header: category => `    ㅤ. ݁₊ ⊹ . ݁ 𖹭 ֶָ֢ ݁ . ⊹ ₊ ݁.࣭⭑ֶָ֢\n             ${category}\n`,
      body: (cmd, emoji) => `𖦹°‧★${emoji} ${cmd}`,
