@@ -19,8 +19,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
     await m.react('🌷')
 
-    // 1. Cambiamos la variable 'img' por 'video'
-    const videoUrl = 'https://files.catbox.moe/cgteah.mp4'
+    const img = 'https://files.catbox.moe/sy1dwt.jpeg'
 
 let tags = {};
 let emojis = {
@@ -81,19 +80,13 @@ for (let key in emojis) {
 }
 
     let defaultMenu = {
-
-
-    before: `Kaisen Bot
-𓂃 ࣪˖ ⋆.˚ ʚїɞ ⋆  ${taguser} ⋆. 𐙚 ˚
-𝚃𝚎𝚗 𝚞𝚗/𝚞𝚗𝚊 ${saludo} ౨ৎ✨
-
-${readMore}
+    before: `⊹ ࣪ ˖KaisenBotˊ˗ 
+ˊ˗ˊ
 `,
-
-      header: category => `    𓂃ෆ˚────୨ৎ────𐚁๋࣭⭑ֶָ֢\n             ${category}\n`,
-      body: (cmd, emoji) => `𖦹°‧★${emoji} ${cmd}`,
-      footer: '˚₊‧✩ ˚₊‧꒰ა ʚིᵋº̣̥͙̣̥͙ᵌɞྀ ໒꒱ ‧₊˚ ✩‧₊˚\n',
-      after: `> ${dev}`
+     header: category => `    ㅤ. ݁₊ ⊹ . ݁ 𖹭 ֶָ֢ ݁ . ⊹ ₊ ݁.࣭⭑ֶָ֢\n             ${category}\n`,
+     body: (cmd, emoji) => `𖦹°‧★${emoji} ${cmd}`,
+     footer: '˚₊‧✩ ˚₊‧꒰ა ʚིᵋº̣̥͙̣̥͙ᵌɞྀ ໒꒱ ‧₊˚ ✩‧₊˚\n',
+     after: `> ${dev}`
   }
 
     let help = Object.values(global.plugins)
@@ -120,20 +113,18 @@ ${readMore}
       defaultMenu.after
     ].join('\n')
 
-
-   await conn.sendMessage(m.chat, {
-    image: { url: img },
-    caption: menuText,
-    mentions: [m.sender, creadorM],
-    gifPlayback: true
-  }, { quoted: fkontak })
+    // Envío de imagen estándar sin fkontak ni metadatos de contacto flotantes
+    await conn.sendMessage(m.chat, {
+      image: { url: img },
+      caption: menuText,
+      mentions: [m.sender, global.creadorM || m.sender]
+    })
 
   } catch (e) {
     console.error(e)
     await m.reply('*❌ Hubo un error al generar el menú.*')
   }
 }
-
 
 handler.command = /^(menu|menú|memu|memú|help|info|comandos|2help|menu1.2|ayuda|commands|commandos|cmd)$/i;
 export default handler
