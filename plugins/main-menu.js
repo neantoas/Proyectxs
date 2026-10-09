@@ -128,7 +128,7 @@ for (let key in emojis) {
   }
 }
 
-handler.command = /^(menu|menú|memu|memú|help|info|comandos|2help|menu1.2|ayuda|commands|commandos|cmd)$/i;
+handler.command = /^(asasas)$/i;
 export default handler
 
 function clockString(ms) {
