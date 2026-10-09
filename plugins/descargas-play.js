@@ -28,14 +28,14 @@ let handler = async (m, { conn, usedPrefix, command, text }) => {
     // Enviar la miniatura con los datos de la canción
     await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: infoText }, { quoted: m })
 
-    // 2. Endpoint adaptado a ytmp3 con tu apikey
-    let apiUrl = `https://dv-yer-api.online/ytmp3?apikey=dvyer431729171143&url=${encodeURIComponent(url)}`
+    // 2. Endpoint actualizado con mode=link y tu apikey
+    let apiUrl = `https://dv-yer-api.online/ytmp3?mode=link&url=${encodeURIComponent(url)}&apikey=dvyer119038896862`
     
-    // 3. Petición a la API
+    // 3. Petición a la nueva API
     let res = await axios.get(apiUrl)
     
-    // Capturar el enlace de descarga del audio
-    let downloadUrl = res.data.result || res.data.url || res.data.download
+    // Capturar el enlace de descarga del audio desde la estructura de respuesta
+    let downloadUrl = res.data.result?.download || res.data.result || res.data.url || res.data.download
 
     if (!downloadUrl) {
       throw new Error('La API no devolvió un enlace de descarga de audio válido.')
