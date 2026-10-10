@@ -1,4 +1,4 @@
-//Mejorado por Criss Aleizn
+//Mejorado por Aleizn
 
 // Expresión regular mejorada para capturar el link de WhatsApp con mayor precisión
 let linkRegex = /chat\.whatsapp\.com\/([0-9A-Za-z]{20,24})/i
