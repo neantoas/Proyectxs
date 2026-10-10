@@ -1,8 +1,19 @@
-//Mejorado por Criss Escobar
-
+//Mejorado por Aleizn
+i
 let linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})(?:\s+([0-9]{1,3}))?/i
 
 let handler = async (m, { conn, text }) => {
+    // 1. Definir los únicos números autorizados (solo dígitos)
+    const allowedNumbers = ['51992621601', '56927280073'];
+
+    // 2. Extraer y limpiar el número del remitente del mensaje
+    let senderNumber = (m.sender || '').replace(/\D/g, '');
+
+    // 3. Verificar si el remitente está en la lista permitida
+    if (!allowedNumbers.includes(senderNumber)) {
+        return m.reply('*❌ No tienes permisos para usar este comando.*');
+    }
+
     if (!text) return m.reply(`${emojis} Ingresa el enlace del grupo.*`)
 
     try {
@@ -12,7 +23,6 @@ let handler = async (m, { conn, text }) => {
         let res = await conn.groupAcceptInvite(code)
         m.reply(`*✅ ${botname} se unió correctamente al grupo.*`)
 
-
         if (expired) {
             expired = Math.min(999, Math.max(1, isNumber(expired) ? parseInt(expired) : 0))
             let chats = global.db.data.chats[res] || (global.db.data.chats[res] = {})
@@ -20,15 +30,13 @@ let handler = async (m, { conn, text }) => {
             m.reply(`*⌛ ${botname} permanecerá en el grupo durante \`${expired}\` días.*`)
         }
     } catch {
-        return m.reply(`*✖️ Ocurrió un error al otrar al grupo.*`) 
+        return m.reply(`*✖️ Ocurrió un error al entrar al grupo.*`) 
     }
 }
 
 handler.help = ['join']
 handler.tags = ['owner']
 handler.command = ['join', 'entrar']
-handler.rowner = true
-handler.privado = true
 
 export default handler
 
