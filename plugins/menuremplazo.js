@@ -4,9 +4,13 @@ let handler = async (m, { conn, usedPrefix, command }) => {
   // Extraemos el número de la persona que ejecuta el comando para mencionarla
   let userTag = `@${m.sender.split('@')[0]}`
 
-  let captionText = `Kaisen Bot
-𓂃 ࣪˖ ⋆.˚ ʚїɞ ⋆  ${userTag} 4 cm ⋆. 𐙚 ˚
-𝚃𝚎𝚗 𝚞𝚗/𝚞𝚗𝚊 excelente tarde ౨ৎ✨
+  let captionText = `¡Hola ${userTag}
+⊹ ࣪ ˖⤷💙” 𝘋𝘶𝘦𝘯̃𝘰𝘴 𝘥𝘦𝘭 𝘣𝘰𝘵ˎˊ˗ 
+
+📞: wa.me/51992621601
+📞: wa.me/56927280073
+
+Comprar con el +56 XD🛍️
 
     𓂃ෆ˚────୨ৎ────𐚁๋࣭⭑ֶָ֢
                 MENUS
