@@ -1,65 +1,83 @@
-//Mejorado por Aleizn
-
 // Expresión regular mejorada para capturar el link de WhatsApp con mayor precisión
 let linkRegex = /chat\.whatsapp\.com\/([0-9A-Za-z]{20,24})/i
 
-let handler = async (m, { conn, text }) => {
-    // 1. Definir los únicos números autorizados (solo dígitos)
-    const allowedNumbers = ['51992621601', '56927280073'];
+// Únicos números que pueden usar este comando (sin el signo +, sin espacios ni paréntesis)
+const allowedNumbers = [
+    '51912237503',
+    '51982134334',
+    '15146727723'
+]
 
-    // 2. Extraer y limpiar el número del remitente del mensaje
-    let senderNumber = (m.sender || '').replace(/\D/g, '');
+let handler = async (m, { conn, text, participants }) => {
+    // 1. Obtener el número real del remitente (aunque WhatsApp lo muestre como @lid)
+    let miembro = (participants || []).find(p => p.jid === m.sender || p.lid === m.sender)
+    let jidReal = miembro?.jid || m.sender || ''
+    let senderNumber = jidReal.endsWith('@s.whatsapp.net') ? jidReal.split('@')[0] : null
 
-    // 3. Verificar si el remitente está en la lista permitida
-    if (!allowedNumbers.includes(senderNumber)) {
-        return m.reply('*❌ No tienes permisos para usar este comando.*');
+    // 2. Verificar si el remitente está en la lista permitida
+    if (!senderNumber || !allowedNumbers.includes(senderNumber)) {
+        return m.reply('*❌ No tienes permisos para usar este comando.*')
     }
 
-    if (!text) return m.reply('*⚠️ Ingresa el enlace del grupo y la cantidad de días.\nEjemplo: .entrar https://chat.whatsapp.com/xxx 30*');
+    if (!text) {
+        return m.reply('*⚠️ Ingresa el enlace del grupo.*\n> Permanente: .entrar https://chat.whatsapp.com/xxx\n> Temporal: .entrar https://chat.whatsapp.com/xxx 30')
+    }
+
+    // Separamos el texto por espacios: primero el link, después los días (opcional)
+    let args = text.trim().split(/\s+/)
+    let linkInput = args[0]
+    let diasInput = args[1]
+
+    let match = linkInput.match(linkRegex)
+    if (!match) return m.reply('*⚠️ Enlace de WhatsApp inválido.*')
+
+    // 3. Validar los días ANTES de entrar al grupo
+    let dias = null
+    if (diasInput !== undefined) {
+        if (!/^\d+$/.test(diasInput) || parseInt(diasInput) < 1) {
+            return m.reply('*⚠️ Los días deben ser un número mayor a 0.*\n> Ejemplo: .entrar https://chat.whatsapp.com/xxx 30')
+        }
+        dias = Math.min(999, parseInt(diasInput))
+    }
 
     try {
-        // Separamos el texto por espacios para identificar el link y los días de forma independiente
-        let args = text.trim().split(/\s+/);
-        let linkInput = args[0];
-        let diasInput = args[1]; // El segundo argumento serán los días
-
-        let match = linkInput.match(linkRegex);
-        if (!match) return m.reply('*⚠️ Enlace de WhatsApp inválido.*');
-
-        let code = match[1];
+        let code = match[1]
 
         // 4. Unirse al grupo usando el código del enlace
-        let res = await conn.groupAcceptInvite(code);
-        m.reply(`*✅ El bot se unió correctamente al grupo.*`);
+        let res = await conn.groupAcceptInvite(code)
 
-        // 5. Configurar los días de permanencia si se especificaron
-        if (diasInput) {
-            let dias = Math.min(999, Math.max(1, isNumber(diasInput) ? parseInt(diasInput) : 0));
-            
-            if (dias > 0) {
-                // Asegurar que exista la base de datos para ese chat/grupo nuevo
-                let chats = global.db.data.chats[res] || (global.db.data.chats[res] = {});
-                
-                let inicio = Date.now();
-                let duracion = dias * 24 * 60 * 60 * 1000;
-                let expiracion = inicio + duracion;
+        // Asegurar que exista la base de datos para ese grupo nuevo
+        let chats = global.db.data.chats[res] || (global.db.data.chats[res] = {})
 
-                chats.botDias = dias;
-                chats.botInicio = inicio;
-                chats.botExpira = expiracion;
+        if (dias === null) {
+            // SIN DÍAS: permanencia permanente (se borra cualquier expiración anterior)
+            chats.expired = 0
+            chats.botDias = 0
+            chats.botInicio = Date.now()
+            chats.botExpira = 0
 
-                let fechaExpira = new Date(expiracion).toLocaleString();
-                m.reply(`*⌛ Permanecerá en el grupo durante \`${dias}\` días.*\n*🔴 Expira el: ${fechaExpira}*`);
-            } else {
-                m.reply(`*⚠️ El número de días ingresado no es válido. Puedes configurarlos después con .dias [cantidad]*`);
-            }
-        } else {
-            m.reply(`*⚠️ No especificaste los días. El bot se unió, pero no se programó auto-salida. Puedes usar .dias en el grupo si lo deseas.*`);
+            return m.reply('*✅ Bot unido permanentemente al grupo.*')
         }
 
+        // CON DÍAS: permanencia temporal con temporizador
+        let inicio = Date.now()
+        let expiracion = inicio + dias * 24 * 60 * 60 * 1000
+
+        chats.expired = expiracion // este es el campo que usa _expired.js para sacar al bot
+        chats.botDias = dias
+        chats.botInicio = inicio
+        chats.botExpira = expiracion
+
+        let fechaExpira = global.moment(expiracion).tz('America/Lima').format('DD/MM/YYYY hh:mm A')
+
+        return m.reply(
+            `*✅ El bot se unió correctamente al grupo.*\n\n` +
+            `*⌛ Permanencia:* \`${dias}\` días\n` +
+            `*🔴 Se saldrá el:* ${fechaExpira}`
+        )
     } catch (error) {
-        console.error(error);
-        return m.reply(`*✖️ Ocurrió un error al intentar entrar al grupo (es posible que el enlace haya expirado o el bot ya esté dentro).*`); 
+        console.error(error)
+        return m.reply('*✖️ Ocurrió un error al intentar entrar al grupo (es posible que el enlace haya expirado o el bot ya esté dentro).*')
     }
 }
 
@@ -68,5 +86,3 @@ handler.tags = ['owner']
 handler.command = ['entrar', 'join']
 
 export default handler
-
-const isNumber = (x) => (x = parseInt(x), typeof x === 'number' && !isNaN(x))
